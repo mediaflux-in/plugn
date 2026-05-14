@@ -22,7 +22,7 @@ This starts the app with MySQL and Redis. The app waits for MySQL and Redis heal
 * [CRM API on localhost:8084](http://localhost:8084)
 * [Partner on localhost:8085](http://localhost:8085)
 * [Remail on localhost:8086](http://localhost:8086)
-* [Shortner on localhost:8087](http://localhost:8087)
+* [Shortener on localhost:8087](http://localhost:8087)
 * [PhpMyAdmin on localhost:8088](http://localhost:8088)
 
 
@@ -62,9 +62,9 @@ docker-compose run --rm backend vendor/bin/codecept run --fail-fast --html repor
 
 ```bash
 # Connect to mysql container
-docker-compose exec mysql bash
+docker compose -f docker-compose-local.yml -p plugn-local-server exec mysql bash
 
-# Connect to db
+# Then connect to db inside the container
 mysql -uplugnuser -pplugn plugn
 ```
 
