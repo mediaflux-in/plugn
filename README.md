@@ -1,4 +1,4 @@
-## Set up Docker Dev Environment -1
+## Set up Docker Dev Environment
 
 Build production images 
 
@@ -6,33 +6,33 @@ Build production images
 docker compose -f docker-compose-prod.yml up --force-recreate
 ```
 
-Step by step 
+### Local stack
 
-Run the following command after installing Docker
+Run the following command after installing Docker:
 
 ```bash
-docker-compose up
+docker compose -f docker-compose-local.yml -p plugn-local-server up --build
 ```
 
-This should set you up with the entire app along with MySQL and Redis. Use the following links to check it out:
+This starts the app with MySQL and Redis. The app waits for MySQL and Redis health checks before running Yii init and migrations. Use the following links to check it out:
 
-* [Backend on localhost:21080](http://localhost:21080)
-* [Frontend on localhost:22080](http://localhost:22080)
-* [Agent API on localhost:23080](http://localhost:23080)
-* [CRM API on localhost:23080](http://localhost:24080)
-* [API on localhost:21080](http://localhost:25080)
-* [Shortner on localhost:23080](http://localhost:26080)
-* [Partner on localhost:23080](http://localhost:27080)
-* [Phpmyadmin on localhost:8080](http://localhost:8080)
+* [Agent API on localhost:8081](http://localhost:8081)
+* [Store API on localhost:8082](http://localhost:8082)
+* [Backend on localhost:8083](http://localhost:8083)
+* [CRM API on localhost:8084](http://localhost:8084)
+* [Partner on localhost:8085](http://localhost:8085)
+* [Remail on localhost:8086](http://localhost:8086)
+* [Shortner on localhost:8087](http://localhost:8087)
+* [PhpMyAdmin on localhost:8088](http://localhost:8088)
 
 
 ## Accessing terminal in backend container
 
 ```bash
-docker-compose exec backend bash
+docker compose -f docker-compose-local.yml -p plugn-local-server exec app bash
 
 # Now you can run things like
-php composer.phar install 
+composer install
 ./init
 ./yii migrate
 ```
@@ -65,17 +65,17 @@ docker-compose run --rm backend vendor/bin/codecept run --fail-fast --html repor
 docker-compose exec mysql bash
 
 # Connect to db
-mysql -uroot -p12345
+mysql -uplugnuser -pplugn plugn
 ```
 
 
 ### Using Phpmyadmin
 
-Phpmyadmin is running on localhost port 8080.
+PhpMyAdmin is running on localhost port 8088.
 
-* [http://localhost:8080](http://localhost:8080)
-* Username: root
-* Password: 12345
+* [http://localhost:8088](http://localhost:8088)
+* Username: plugnuser
+* Password: plugn
 
 ## Configure Cron Commands using following intervals
 
@@ -407,4 +407,4 @@ todo
 
 ## to install aws 
 
-- sudo snap install aws-cli --classic 
+- sudo snap install aws-cli --classic

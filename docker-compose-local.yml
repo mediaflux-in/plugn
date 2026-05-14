@@ -21,6 +21,12 @@ services:
     #  - "3306:3306"
     networks:
       - plugn-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
 
   app:
     build: 
@@ -50,8 +56,10 @@ services:
       - .:/home/ubuntu/plugn
       #- ./nginx/basic.conf:/etc/nginx/sites-available/basic.conf
     depends_on:
-      - redis
-      - mysql
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
     networks:
       - plugn-network
 
@@ -66,20 +74,26 @@ services:
    #   - redis-server --port 7777
     volumes:
     - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: plugn-phpmyadmin-local
     environment:
       PMA_HOST: mysql
       PMA_USER: plugnuser
       PMA_PASSWORD: plugn
     ports:
-      - "8081:80"
+      - "8088:80"
     networks:
       - plugn-network
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
 volumes:
   redis-data:
